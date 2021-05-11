@@ -84,6 +84,7 @@ async function start(args) {
         }
     // process.exit(0);
     }catch (e) {
+        console.log('make sure you use -i to specify input type("file", or "url")');
         console.error(e);
         process.exit(1);
     }
@@ -104,7 +105,7 @@ function cat(filepath) {
         fs.readFile(`${filepath}`, 'utf8', (err, text) => {
             if (err) {
 
-                const errorString = "Error finding data for " + filepath + "\n";
+                const errorString = `Error finding data for "${filepath}"\n`;
                 reject(errorString);
             } else {
                 resolve(text);
@@ -118,7 +119,7 @@ async function webCat(url) {
         const res = await axios.get(url);
         return res.data;
     } catch (err) {
-        let error = `Error Fetching ${err.config.url}\n`;
+        let error = `Error Fetching "${err.config.url}"\n`;
         if (err.response)
             error += `Request failed with status code ${err.response.status}`;
         throw error;
