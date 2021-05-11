@@ -31,31 +31,50 @@ class MarkovMachine {
   }
 
 
-  /** return random text from chains */
-
+  /**
+   * return random text from chains
+   * 
+   * @param { Number } numWords the number of words in the resulting text 
+   * @returns { String } the REsulting text
+   */
   makeText(numWords = 5) {
+    
     let i = 0;
     let currWord = this.words[i];
-    let text = currWord + ' ';
-    for(let j = 0; j < numWords; j++){
+    let text = [[currWord]];
+
+    for(let j = 1; j < numWords; j++){
       const nextWordOptions = this.chains[currWord];
 
       let nextWord = randElement(nextWordOptions);
       if (!nextWord) {
         //end of the chain
         i++;
+        if(!this.words[i]) i = 0;
         nextWord = this.words[i];
-        text += '. ';
+        text.push([]);
       }
-      text += nextWord + ' ';
+      text[text.length - 1].push(nextWord);
       currWord = nextWord;
     }
-    return text;
+    //constructing the sentence
+    let sentenceArr = [];
+    for(let sentence of text){
+      let sentenceText = sentence.join(' ');
+      sentenceText += '.';
+      sentenceArr.push(sentenceText);
+    }
+    const result = sentenceArr.join(' ');
+    return result;
   }
 
 }
 
-
+/**
+ * 
+ * @param { Array } arr a list of items
+ * @returns a random item from the list (or false if the list is empty)
+ */
 function randElement(arr){
   const length = arr.length;
   if(length != 0){
@@ -66,10 +85,18 @@ function randElement(arr){
   }
 }
 
+/**
+ * 
+ * @param {Number} min The lowest number you might want back
+ * @param {Number} max The highest number you might want back
+ * @returns {Number} a random number (inclusivley) between min and max
+ */
 function randBetween(min=0,max=100){
   return Math.floor( (Math.random() * (max - min + 1) + min));
 }
 
 module.exports = {
-  MarkovMachine
+  MarkovMachine,
+  randElement,
+  randBetween
 }
