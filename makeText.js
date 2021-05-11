@@ -19,6 +19,14 @@ const flags = {
     [INPUT_TYPE_FLAG]: FILE_INPUT_OPTION,
 };
 
+const helperText = 
+"HELLO! to use this program, use \n\
+        -i to select the input type, and \n\
+        -o to specify the output file. \n\
+After the flags are set, specify as many space seperated inputs as you would like!";
+
+
+
 start(process.argv);
 
 
@@ -61,7 +69,11 @@ function handleInput(args) {
 async function start(args) {
     //get the inputs and sets the flags
     const inputs = handleInput(args);
-
+    //show helper text
+    if (inputs.length == 0){
+        console.log(helperText);
+        process.exit(0);
+    }
     const promises = [];
 
     for (let input of inputs) {
