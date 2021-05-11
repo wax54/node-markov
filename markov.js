@@ -20,6 +20,8 @@ class MarkovMachine {
     let chains = {};
     for(let i = 0; i < this.words.length; i++){
       const currWord = this.words[i];
+      //could add something here to check for punctuation 
+      //if so, next word actually = undefined.
       const nextWord = this.words[i+1];
       if(!chains[currWord]) {
         chains[currWord] = [nextWord];
